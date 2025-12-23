@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Star of the Month | Aurora</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="header-inner">
+      <img src="images/logo.svg" alt="Aurora Events" class="site-logo">
+      <div id="countdown" class="countdown"></div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="page-wrapper">
+
+    <section class="page-title">
+      <h1>Star of the Month</h1>
+      <p>Vote for the star who shined brightest</p>
+    </section>
+
+    <!-- STAR LIST -->
+    <section id="starList" class="candidate-grid">
+      <!-- Star cards injected via JS -->
+    </section>
+
+    <!-- VOTING CLOSED -->
+    <section id="votingClosed" class="voting-closed hidden">
+      <h2>Voting Closed</h2>
+    </section>
+
+  </main>
+
+  <footer class="footer minimal">
+    <a href="index.html" class="back-link">← Back to Home</a>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

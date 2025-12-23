@@ -1,0 +1,602 @@
+/* =========================
+   ROOT & RESET
+========================= */
+:root {
+  --gold: #d4af37;
+  --gold-soft: rgba(212, 175, 55, 0.35);
+  --gold-glow: rgba(212, 175, 55, 0.15);
+  --gold-border: rgba(212, 175, 55, 0.6);
+  --dark: #111;
+  --muted: #666;
+  --white: #ffffff;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 20px 50px rgba(212, 175, 55, 0.25);
+  --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.15);
+  --danger: #c0392b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--white);
+  color: var(--dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+.top-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--gold-soft);
+  padding: 0.9rem 1.2rem;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-logo {
+  height: 42px;
+}
+
+.countdown {
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold);
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid var(--gold-soft);
+  backdrop-filter: blur(6px);
+  letter-spacing: 0.4px;
+}
+
+.admin-label {
+  font-weight: 600;
+  color: var(--gold);
+  font-size: 0.95rem;
+}
+
+/* =========================
+   HOME PAGE
+========================= */
+.home-wrapper {
+  flex: 1;
+  padding: 3rem 1.5rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.main-title {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--muted);
+}
+
+/* =========================
+   CATEGORY CARDS – Golden luxury effects
+========================= */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.8rem;
+}
+
+.category-card {
+  position: relative;
+  border: 1px solid var(--gold-soft);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+}
+
+.category-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--gold-glow), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.category-card::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 22px;
+  padding: 2px;
+  background: linear-gradient(45deg, var(--gold), var(--gold-soft), var(--gold));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.category-card:hover,
+.category-card:active {
+  transform: translateY(-12px);
+  box-shadow: var(--shadow-lg);
+  border-color: transparent;
+}
+
+.category-card:hover::before,
+.category-card:active::before {
+  opacity: 1;
+}
+
+.category-card:hover::after,
+.category-card:active::after {
+  opacity: 1;
+}
+
+.category-card h2 {
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+  font-size: 1.35rem;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+.category-card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================
+   PAGE LAYOUT
+========================= */
+.page-wrapper {
+  flex: 1;
+  padding: 2.5rem 1.5rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.page-title h1 {
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+/* =========================
+   CANDIDATE / VENDOR CARDS – Unified luxury style
+========================= */
+.candidate-grid,
+.admin-candidate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.candidate-card,
+.admin-candidate-card {
+  position: relative;
+  border-radius: 20px;
+  background: var(--white);
+  overflow: hidden;
+  border: none;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  text-align: center;
+}
+
+.candidate-card:hover,
+.admin-candidate-card:hover,
+.candidate-card:active,
+.admin-candidate-card:active {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Golden glow overlay */
+.candidate-card::before,
+.admin-candidate-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--gold-glow), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.candidate-card:hover::before,
+.admin-candidate-card:hover::before,
+.candidate-card:active::before,
+.admin-candidate-card:active::before {
+  opacity: 1;
+}
+
+/* Golden border shine */
+.candidate-card::after,
+.admin-candidate-card::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 22px;
+  padding: 2px;
+  background: linear-gradient(45deg, var(--gold), transparent, var(--gold));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.candidate-card:hover::after,
+.admin-candidate-card:hover::after,
+.candidate-card:active::after,
+.admin-candidate-card:active::after {
+  opacity: 0.7;
+}
+
+/* Image wrapper – full width, cover, no zoom */
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.card-image-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(17,17,17,0.3), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.candidate-card:hover .card-image-wrapper::after,
+.admin-candidate-card:hover .card-image-wrapper::after {
+  opacity: 1;
+}
+
+.candidate-img,
+.admin-candidate-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* =========================
+   CARD CONTENT – Centered text, button pulled higher
+========================= */
+.card-content {
+  padding: 2rem 1.8rem 2.4rem; /* More breathing room, extra bottom for balance */
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center everything */
+  gap: 1.2rem; /* Consistent spacing between elements */
+  position: relative;
+  z-index: 2;
+  align-items: center;
+}
+
+.candidate-name,
+.admin-candidate-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 0;
+  transition: color 0.35s ease;
+}
+
+.candidate-card:hover .candidate-name,
+.admin-candidate-card:hover .candidate-name,
+.candidate-card:active .candidate-name,
+.admin-candidate-card:active .candidate-name {
+  color: var(--gold);
+}
+
+.candidate-card p,
+.admin-candidate-card p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* =========================
+   VOTE BUTTON – Public (single button)
+========================= */
+.vote-btn {
+  background: var(--gold);
+  color: #fff;
+  border: none;
+  padding: 0.85rem 2.2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  align-content: center;
+  transition: all 0.35s ease;
+  align-self: center;
+  margin-top: 0.4rem; /* Pulls the button slightly upward for better balance */
+  margin-bottom: 0.5rem;
+}
+
+.vote-btn:hover,
+.vote-btn:active {
+  background: #c19a2f;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(212, 175, 55, 0.4);
+}
+
+/* =========================
+   ADMIN VOTE BUTTONS – Multiple buttons
+========================= */
+.vote-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: -0.6rem; /* Pulls the whole button group upward */
+}
+
+.vote-buttons button {
+  padding: 0.6rem 1.6rem;
+  border-radius: 999px;
+  border: 1.8px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.35s ease;
+}
+
+.vote-buttons button:hover,
+.vote-buttons button:active {
+  background: var(--gold);
+  color: #fff;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 24px rgba(212, 175, 55, 0.38);
+}
+
+.vote-buttons .remove-vote {
+  border-color: var(--danger);
+  color: var(--danger);
+  margin-top: 0.5rem;
+}
+.vote-buttons .add-vote {
+  margin-top: 0.5rem;
+}
+
+.vote-buttons .remove-vote:hover,
+.vote-buttons .remove-vote:active {
+  background: var(--danger);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(192, 57, 43, 0.35);
+}
+
+/* =========================
+   WINNERS SECTION
+========================= */
+.winners {
+  margin-top: 4rem;
+  text-align: center;
+}
+
+.winner-title {
+  color: var(--gold);
+  margin-bottom: 2rem;
+}
+
+.winner-card {
+  border: 1px solid var(--gold-soft);
+  border-radius: 18px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* =========================
+   ADMIN PANEL
+========================= */
+.admin-wrapper {
+  max-width: 1100px;
+  margin: auto;
+  padding: 2.5rem 1.2rem 3rem;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+.admin-btn {
+  padding: 0.65rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-top: 0.6rem;
+}
+
+.admin-btn:hover {
+  background: var(--gold);
+  color: #fff;
+}
+
+.admin-btn.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.admin-btn.danger:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+.admin-results {
+  text-align: center;
+}
+
+.admin-results h2 {
+  color: var(--gold);
+  margin-bottom: 1.8rem;
+  font-size: 1.4rem;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+  padding: 1.2rem;
+  text-align: center;
+  border-top: 1px solid var(--gold-soft);
+}
+
+.footer.minimal {
+  border-top: none;
+}
+
+.insta-icon {
+  height: 22px;
+}
+
+.back-link {
+  text-decoration: none;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.footer .foot {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+/* =========================
+   UTILITIES & RESPONSIVE
+========================= */
+.hidden {
+  display: none;
+}
+
+.voting-closed {
+  margin-top: 3rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* Mobile optimizations */
+@media (max-width: 1024px) {
+  .category-grid,
+  .candidate-grid,
+  .admin-candidate-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-wrapper,
+  .page-wrapper {
+    padding: 2rem 1rem;
+  }
+
+  .card-image-wrapper {
+    height: 180px;
+  }
+
+  .card-content {
+    padding: 1.4rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .header-inner {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .category-grid,
+  .candidate-grid,
+  .admin-candidate-grid {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  .card-image-wrapper {
+    height: 220px;
+  }
+
+  .category-card {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .card-content {
+    padding: 1.2rem;
+  }
+
+  .admin-actions {
+    gap: 0.6rem;
+  }
+
+  .admin-btn {
+    width: 100%;
+    max-width: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-image-wrapper {
+    height: 200px;
+  }
+}

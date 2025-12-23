@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel | Aurora</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="header-inner">
+      <img src="images/logo.svg" alt="Aurora Events" class="site-logo">
+      <span class="admin-label">Admin Panel</span>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="admin-wrapper">
+
+    <section class="admin-actions">
+      <button id="resetVotes" class="admin-btn danger">Reset Votes</button>
+      <button id="endVoting" class="admin-btn">End Voting</button>
+    </section>
+
+  <section class="admin-results">
+    <h2>Manage Votes</h2>
+
+    <div id="adminCandidateList" class="admin-candidate-grid">
+      <!-- Injected via JS -->
+    </div>
+  </section>
+
+
+  </main>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
+

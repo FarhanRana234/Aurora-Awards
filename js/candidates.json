@@ -1,0 +1,67 @@
+{
+  "vendors": [
+    {
+      "id": "vendor-1",
+      "name": "Areeba's Collection",
+      "image": "images/vendors/vendor-1.jpeg"
+    },
+    {
+      "id": "vendor-2",
+      "name": "Miss Crochet",
+      "image": "images/vendors/vendor-2.jpeg"
+    },
+    {
+      "id": "vendor-3",
+      "name": "Anum Shayan",
+      "image": "images/vendors/vendor-3.jpeg"
+    },
+    {
+      "id": "vendor-4",
+      "name": "The Cozy Crust",
+      "image": "images/vendors/vendor-4.jpeg"
+    },
+    {
+      "id": "vendor-5",
+      "name": "",
+      "image": "images/vendors/vendor-5.jpeg"
+    },
+    {
+      "id": "vendor-6",
+      "name": "",
+      "image": "images/vendors/vendor-6.jpeg"
+    }
+  ],
+
+  "stars": [
+    {
+      "id": "star-1",
+      "name": "Ayesha Khan",
+      "image": "images/stars/star-1.jpeg"
+    },
+    {
+      "id": "star-2",
+      "name": "Hamza Ali",
+      "image": "images/stars/star-2.jpeg"
+    },
+    {
+      "id": "star-3",
+      "name": "Zara Noor",
+      "image": "images/stars/star-3.jpeg"
+    },
+    {
+      "id": "star-4",
+      "name": "Usman Raza",
+      "image": "images/stars/star-4.jpeg"
+    },
+    {
+      "id": "star-5",
+      "name": "Hira Malik",
+      "image": "images/stars/star-5.jpeg"
+    },
+    {
+      "id": "star-6",
+      "name": "Bilal Ahmed",
+      "image": "images/stars/star-6.jpeg"
+    }
+  ]
+}
