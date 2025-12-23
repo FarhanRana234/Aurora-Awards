@@ -3,11 +3,10 @@ import {
   collection,
   doc,
   getDoc,
-  getDocs,
   setDoc,
   updateDoc,
   increment,
-  onSnapshot
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 /* =========================
@@ -17,23 +16,26 @@ const VOTING_END = new Date("2026-01-15T23:59:59");
 const deviceId = localStorage.getItem("deviceId") || crypto.randomUUID();
 localStorage.setItem("deviceId", deviceId);
 
-const countdownEl = document.getElementById("countdown");
 let candidates = { vendors: [], stars: [] };
 
 /* =========================
    COUNTDOWN
 ========================= */
+const countdownEl = document.getElementById("countdown");
+
 function updateCountdown() {
   if (!countdownEl) return;
-
   const now = new Date();
   const diff = VOTING_END - now;
 
   if (diff <= 0) {
     countdownEl.textContent = "Voting Closed";
     document.body.classList.add("voting-ended");
-    lockVoting();
-    showWinners();
+    document.querySelectorAll(".vote-btn").forEach(btn => {
+      btn.disabled = true;
+      btn.textContent = "Closed";
+    });
+    showWinners(); // Automatically show winners
     return;
   }
 
@@ -48,17 +50,27 @@ setInterval(updateCountdown, 1000);
 updateCountdown();
 
 /* =========================
-   LOAD CANDIDATES FROM JSON
+   LOAD CANDIDATES
 ========================= */
-async function loadCandidatesJSON() {
+async function loadCandidates() {
   const res = await fetch("js/candidates.json");
   const data = await res.json();
   candidates.vendors = data.vendors;
   candidates.stars = data.stars;
+
+  // Ensure Firestore candidates exist
+  for (const type of ["vendors", "stars"]) {
+    for (const c of candidates[type]) {
+      const ref = doc(db, "candidates", c.id);
+      const snap = await getDoc(ref);
+      if (!snap.exists()) {
+        await setDoc(ref, { ...c, type: type, votes: 0 });
+      }
+    }
+  }
+
   renderCandidates("vendors");
   renderCandidates("stars");
-  setupVotesListener("vendors");
-  setupVotesListener("stars");
 }
 
 /* =========================
@@ -69,14 +81,12 @@ function renderCandidates(type) {
   if (!listEl) return;
 
   listEl.innerHTML = "";
-
   candidates[type].forEach(c => {
     const card = document.createElement("div");
     card.className = "candidate-card";
     card.innerHTML = `
       <img src="${c.image}" class="candidate-img">
       <h3 class="candidate-name">${c.name}</h3>
-      <p id="votes-${c.id}">Votes: 0</p>
       <button class="vote-btn" data-id="${c.id}" data-type="${type}">Vote</button>
     `;
     listEl.appendChild(card);
@@ -94,18 +104,18 @@ document.addEventListener("click", async e => {
   const type = e.target.dataset.type;
 
   const voteRef = doc(db, "votes", deviceId);
-  const userVote = await getDoc(voteRef);
-
+  const userVoteSnap = await getDoc(voteRef);
   let prevVote = null;
-  if (userVote.exists()) prevVote = userVote.data()[`${type}Vote`];
 
-  // Remove previous vote if exists
+  if (userVoteSnap.exists()) prevVote = userVoteSnap.data()[`${type}Vote`];
+
+  // Remove previous vote
   if (prevVote && prevVote !== candidateId) {
-    await updateDoc(doc(db, type, prevVote), { votes: increment(-1) });
+    await updateDoc(doc(db, "candidates", prevVote), { votes: increment(-1) });
   }
 
   // Add new vote
-  await updateDoc(doc(db, type, candidateId), { votes: increment(1) });
+  await updateDoc(doc(db, "candidates", candidateId), { votes: increment(1) });
 
   // Save user vote
   await setDoc(voteRef, { [`${type}Vote`]: candidateId }, { merge: true });
@@ -114,42 +124,16 @@ document.addEventListener("click", async e => {
 });
 
 /* =========================
-   LISTEN FOR VOTES CHANGES
-========================= */
-function setupVotesListener(type) {
-  candidates[type].forEach(c => {
-    const candidateDoc = doc(db, type, c.id);
-    onSnapshot(candidateDoc, snapshot => {
-      const votes = snapshot.data()?.votes || 0;
-      const votesEl = document.getElementById(`votes-${c.id}`);
-      if (votesEl) votesEl.textContent = `Votes: ${votes}`;
-    });
-  });
-}
-
-/* =========================
-   LOCK VOTING
-========================= */
-function lockVoting() {
-  document.querySelectorAll(".vote-btn").forEach(btn => {
-    btn.disabled = true;
-    btn.textContent = "Closed";
-  });
-  document.getElementById("votingClosed")?.classList.remove("hidden");
-}
-
-/* =========================
    WINNER CALCULATION
 ========================= */
 async function getWinner(type) {
-  const snap = await getDocs(collection(db, type));
+  const snap = await getDocs(collection(db, "candidates"));
   let winner = null;
-
   snap.forEach(docSnap => {
     const c = docSnap.data();
+    if (c.type !== type) return;
     if (!winner || c.votes > winner.votes) winner = { ...c };
   });
-
   return winner;
 }
 
@@ -176,7 +160,7 @@ async function showWinners() {
   `;
 }
 
-// =========================
-// INIT
-// =========================
-loadCandidatesJSON();
+/* =========================
+   INIT
+========================= */
+loadCandidates();
